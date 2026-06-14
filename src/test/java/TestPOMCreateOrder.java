@@ -1,8 +1,7 @@
-import io.qameta.allure.junit4.DisplayName;
+import io.qameta.allure.Step;
+import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class TestPOMCreateOrder {
 
@@ -29,21 +28,18 @@ public class TestPOMCreateOrder {
         this.colors = colors;
     }
 
-    @DisplayName("Создание заказа")
-    public void createOrder(){
+    @Step("Создание заказа")
+    public Response createOrder(){
 
         OrderDTO order = new OrderDTO(firstName, lastName, address, metroStation,
                 phone, rentTime, deliveryDate, comment, colors);
 
-        given()
+        return given()
                 .header("Content-type", "application/json")
                 .spec(RequestTest.requestSpec)
                 .body(order)
                 .when()
                 .post(Endpoints.CREATE_ORDER)
-                .then().assertThat().body("track", notNullValue())
-                .and()
-                .statusCode(SC_CREATED)
         ;
     }
 }

@@ -3,6 +3,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static org.apache.http.HttpStatus.SC_CREATED;
+import static org.hamcrest.CoreMatchers.notNullValue;
+
 @RunWith(Parameterized.class)
 public class TestCreateOrder {
     private final String firstName;
@@ -59,6 +62,17 @@ public class TestCreateOrder {
                         5,
                         "2020-06-06",
                         "Saske, come back to Konoha",
+                        new String[]{"GREY"}
+                },
+                {
+                        "Naruto",
+                        "Uchiha",
+                        "Konoha, 142 apt.",
+                        "4",
+                        "+7 800 355 35 35",
+                        5,
+                        "2020-06-06",
+                        "Saske, come back to Konoha",
                         new String[]{"BLACK", "GREY"}
                 },
                 {
@@ -76,8 +90,11 @@ public class TestCreateOrder {
     }
 
     @Test
-    public void CreateOrderTest(){
-        obj.createOrder();
+    public void createOrderTest(){
+        obj.createOrder()
+                .then().assertThat().body("track", notNullValue())
+                .and()
+                .statusCode(SC_CREATED);
     }
 
 }

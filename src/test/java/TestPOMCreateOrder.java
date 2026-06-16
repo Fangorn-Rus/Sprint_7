@@ -31,7 +31,7 @@ public class TestPOMCreateOrder {
     @Step("Создание заказа")
     public Response createOrder(){
 
-        OrderDTO order = new OrderDTO(firstName, lastName, address, metroStation,
+        CreateOrderDTO order = new CreateOrderDTO(firstName, lastName, address, metroStation,
                 phone, rentTime, deliveryDate, comment, colors);
 
         return given()

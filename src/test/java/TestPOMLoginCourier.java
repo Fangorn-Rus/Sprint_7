@@ -1,27 +1,37 @@
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import java.io.File;
 import static io.restassured.RestAssured.given;
 
 public class TestPOMLoginCourier {
+    private final String  login;
+    private final String password;
+    private final String firstName;
+
+    public TestPOMLoginCourier(String login, String password, String firstName) {
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+    }
 
     @Step("создание курьера")
-    public static void createCourier(File json){
+    public void createCourier(){
+        LoginCourierDTO obj = new LoginCourierDTO(login, password, firstName);
         given()
                 .header("Content-type", "application/json")
                 .spec(RequestTest.requestSpec)
-                .body(json)
+                .body(obj)
                 .when()
                 .post(Endpoints.CREATE_COURIER)
         ;
     }
 
     @Step("удаление курьера")
-    public static void deleteCourier(File json){
+    public void deleteCourier(){
+        LoginCourierDTO obj = new LoginCourierDTO(login, password, firstName);
         Response response = given()
                 .header("Content-type", "application/json")
                 .spec(RequestTest.requestSpec)
-                .body(json)
+                .body(obj)
                 .when()
                 .post(Endpoints.LOGIN_COURIER)
                 ;
@@ -36,41 +46,42 @@ public class TestPOMLoginCourier {
 
 
     @Step("курьер может авторизоваться")
-    public Response loginCourier(File newCourierData, File loginCourier){
-
-        createCourier(newCourierData);
+    public Response loginCourier(){
+        LoginCourierDTO obj = new LoginCourierDTO(login, password, firstName);
+        createCourier();
 
         Response response = given()
                 .header("Content-type", "application/json")
                 .spec(RequestTest.requestSpec)
-                .body(loginCourier)
+                .body(obj)
                 .when()
                 .post(Endpoints.LOGIN_COURIER)
         ;
 
-        deleteCourier(newCourierData);
+        deleteCourier();
         return response;
 
     }
 
     @Step("если какого-то поля нет, запрос возвращает ошибку")
-    public Response loginCourierMissingField(File file){
+    public Response loginCourierMissingField(){
+        LoginCourierDTO obj = new LoginCourierDTO(login, password, firstName);
              return given()
                     .header("Content-type", "application/json")
                     .spec(RequestTest.requestSpec)
-                    .body(file)
+                    .body(obj)
                     .when()
                     .post(Endpoints.LOGIN_COURIER)
                     ;
     }
 
     @Step("система вернёт ошибку, если неправильно указать логин или пароль")
-    public Response loginCourierWrongField(File loginCourierWrongField){
-
+    public Response loginCourierWrongField(){
+        LoginCourierDTO obj = new LoginCourierDTO(login, password, firstName);
         return given()
                 .header("Content-type", "application/json")
                 .spec(RequestTest.requestSpec)
-                .body(loginCourierWrongField)
+                .body(obj)
                 .when()
                 .post(Endpoints.LOGIN_COURIER)
         ;

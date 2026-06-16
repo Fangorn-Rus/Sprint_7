@@ -14,12 +14,14 @@ public class TestGetOrder {
     }
 
     @Test
-    public void getOrder(){
+    public void testGetOrder(){
 
-        obj.getOrder()
-                .then().assertThat().body("orders[0].id", notNullValue())
+        obj.getOrder("/api/v1/orders?limit=10&page=0")
+                .then().assertThat()
+                .statusCode(SC_OK)
                 .and()
-                .statusCode(SC_OK);
+                .body("orders[0].id", notNullValue())
+                ;
     }
 
 }

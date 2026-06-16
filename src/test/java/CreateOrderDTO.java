@@ -1,4 +1,4 @@
-public class OrderDTO {
+public class CreateOrderDTO {
     private  String lastName;
     private  String firstName;
     private  String address;
@@ -9,7 +9,7 @@ public class OrderDTO {
     private  String comment;
     private  String[] colors;
 
-    public OrderDTO(String lastName, String firstName, String address, String metroStation, String phone, int rentTime, String deliveryDate, String comment, String[] colors) {
+    public CreateOrderDTO(String lastName, String firstName, String address, String metroStation, String phone, int rentTime, String deliveryDate, String comment, String[] colors) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.address = address;
@@ -21,7 +21,7 @@ public class OrderDTO {
         this.colors = colors;
     }
 
-    public OrderDTO() {
+    public CreateOrderDTO() {
     }
 
     public void setLastName(String lastName) {

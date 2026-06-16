@@ -90,7 +90,7 @@ public class TestCreateOrder {
     }
 
     @Test
-    public void createOrderTest(){
+    public void testCreateOrder(){
         obj.createOrder()
                 .then().assertThat().body("track", notNullValue())
                 .and()
